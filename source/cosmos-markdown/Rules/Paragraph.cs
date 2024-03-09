@@ -1,30 +1,24 @@
-﻿using System;
+﻿using cosmos_markdown.Tools;
 using CosmosTTF;
-using System.Drawing;
-using PrismColor = PrismAPI.Graphics.Color;
+using PrismAPI.Graphics;
+using Color = System.Drawing.Color;
 
 namespace cosmos_markdown.Rules
 {
     internal class Paragraph : Rule
     {
+        private const int FontSize = 18;
+
         private string Text;
         private TTFFont Font;
-        private Surface Surface;
 
-        internal Paragraph(string Text, TTFFont Font) : base(Font.CalculateWidth(Text, 19), 19)
+        internal Paragraph(string Text, TTFFont Font) : base(Text.Trim().Length == 0 ? 10 : FontSize + 10)
         {
-            this.Text = Text;
+            this.Text = Text.Trim();
             this.Font = Font;
-
-            Surface = new Surface(Canvas);
         }
 
-        internal override void Render()
-        {
-            Canvas.Clear(PrismColor.White);
-            Font.DrawToSurface(Surface, Size, 0, Size, Text, Color.Black);
-            //Canvas.(Color.Black, "Testing", "MonaSans-Regular", 14, new Point(0, 14));
-            //Proxy.DrawStringTTF(Color.Black, Text, Font, Size, new Point(0, 0));
-        }
+        internal override int RenderTo(Canvas Canvas, int Y)
+            => TextRenderer.DrawString(Canvas, FontSize, 25, Y + FontSize, Canvas.Width, Text, Font, Color.Black, false);
     }
 }

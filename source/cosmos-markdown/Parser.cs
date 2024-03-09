@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using cosmos_markdown.regex.RegularExpressions;
 
 namespace cosmos_markdown
@@ -8,41 +7,61 @@ namespace cosmos_markdown
     {
         internal static Pattern[] Patterns = new Pattern[]
         {
+            new Patterns.H1(),
+            new Patterns.H2(),
+            new Patterns.H3(),
             new Patterns.Paragraph()
         };
 
         internal string[] Document;
 
         internal Font Font;
-        internal List<Rule> Elements;
+        internal List<Rule> Rules;
 
         internal Parser(string[] Document, Font Font)
         {
             this.Document = Document;
             this.Font = Font;
 
-            Elements = new List<Rule>();
+            Rules = new List<Rule>();
         }
 
-        internal void ParseMarkdown()
+        internal void ParseDocument()
         {
             foreach (string line in Document)
             {
-                foreach (Pattern pattern in Patterns)
+                ParseLine(line.Trim());
+            }
+        }
+
+        private void ParseLine(string line)
+        {
+            foreach (Pattern pattern in Patterns)
+            {
+                Regex regex = new Regex(pattern.ThePattern);
+                Match match = regex.Match(line.Trim());
+
+                if (!match.Success) continue;
+
+                string output = match.Groups[1].Value;
+
+                switch (pattern.TheType)
                 {
-                    Regex regex = new Regex(pattern.ThePattern);
-                    Match match = regex.Match(line);
+                    case "H1":
+                        Rules.Add(new Rules.H1(output, Font.Bold));
+                        return;
 
-                    if (!match.Success) continue;
+                    case "H2":
+                        Rules.Add(new Rules.H2(output, Font.Bold));
+                        return;
 
-                    string output = match.Groups[1].Value;
+                    case "H3":
+                        Rules.Add(new Rules.H3(output, Font.Bold));
+                        return;
 
-                    switch (pattern.TheType)
-                    {
-                        case "Paragraph":
-                            Elements.Add(new Rules.Paragraph(output, Font.Regular));
-                            break;
-                    }
+                    case "Paragraph":
+                        Rules.Add(new Rules.Paragraph(output, Font.Regular));
+                        return;
                 }
             }
         }

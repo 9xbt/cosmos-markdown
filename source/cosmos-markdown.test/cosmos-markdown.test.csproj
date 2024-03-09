@@ -18,18 +18,20 @@
         <Description>Use VMware Player or Workstation to deploy and debug.</Description>
         <PxeInterface>192.168.0.8</PxeInterface>
         <CompressionType>Gzip</CompressionType>
-        <OptimizationLevel>3</OptimizationLevel>
+        <OptimizationLevel>1</OptimizationLevel>
         <DebugEnabled>False</DebugEnabled>
         <VMWareEdition>Workstation</VMWareEdition>
     </PropertyGroup>
 
     <ItemGroup>
       <None Remove="Resources\Example.md" />
+      <None Remove="Resources\MonaSans-Bold.ttf" />
       <None Remove="Resources\MonaSans-Regular.ttf" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\Example.md" />
+      <EmbeddedResource Include="Resources\MonaSans-Bold.ttf" />
       <EmbeddedResource Include="Resources\MonaSans-Regular.ttf" />
     </ItemGroup>
 

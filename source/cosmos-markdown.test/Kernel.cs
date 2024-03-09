@@ -8,14 +8,16 @@ namespace cosmos_markdown.test
 {
     public class Kernel : Cosmos.System.Kernel
     {
-        static Display Screen = Display.GetDisplay(1024, 768);
+        static Display Screen = Display.GetDisplay(1280, 1024);
 
         protected override void BeforeRun()
         {
             try
             {
                 Screen.Clear(Color.White);
-                Screen.RenderMarkdownDocument(Resources.Markdown.Split('\n'), new Font(Resources.Font, default, default));
+                
+                MarkdownRenderer.RenderMarkdownDocument(Screen, Resources.Markdown, new Font(Resources.Regular, Resources.Bold));
+
                 Screen.Update();
             }
             catch (Exception ex)

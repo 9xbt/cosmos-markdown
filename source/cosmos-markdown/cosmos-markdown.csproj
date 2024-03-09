@@ -10,7 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-		<PackageReference Include="CosmosTTF" Version="4.0.0" />
+		<PackageReference Include="CosmosTTF" Version="4.0.1" />
 		<PackageReference Include="PrismAPI" Version="1.0.3" />
 	</ItemGroup>
 

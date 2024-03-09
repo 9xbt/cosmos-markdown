@@ -1,19 +1,13 @@
-﻿using System;
-using PrismAPI.Graphics;
+﻿using PrismAPI.Graphics;
 
 namespace cosmos_markdown
 {
     internal abstract class Rule
     {
         internal int Size;
-        internal Canvas Canvas;
 
-        protected Rule(int Width, int Height)
-        {
-            Size = Height;
-            Canvas = new Canvas((ushort)Width, (ushort)Height);
-        }
+        protected Rule(int Size) => this.Size = Size;
 
-        internal abstract void Render();
+        internal abstract int RenderTo(Canvas Canvas, int Y);
     }
 }
