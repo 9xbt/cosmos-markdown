@@ -19,6 +19,14 @@ namespace cosmos_markdown.test
                 MarkdownRenderer.RenderMarkdownDocument(Screen, Resources.Markdown, new Font(Resources.Regular, Resources.Bold));
 
                 Screen.Update();
+
+                Console.ReadKey(true);
+
+                Screen.Clear(Color.White);
+
+                MarkdownRenderer.RenderMarkdownDocument(Screen, new string[] { "# Admire ’", "Admire the ’" }, new Font(Resources.Regular, Resources.Bold));
+
+                Screen.Update();
             }
             catch (Exception ex)
             {

@@ -15,7 +15,7 @@ namespace cosmos_markdown
         /// <param name="Font">The font to use by renderer</param>
         public static void RenderMarkdownDocument(Canvas Canvas, string[] Document, Font Font)
         {
-            var parser = new Parser(Document, Font);
+            var parser = new MarkdownParser(Document, Font);
             parser.ParseDocument();
 
 #if __RULE_DEBUG__

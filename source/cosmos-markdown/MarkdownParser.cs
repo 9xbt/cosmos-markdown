@@ -3,7 +3,7 @@ using cosmos_markdown.regex.RegularExpressions;
 
 namespace cosmos_markdown
 {
-    internal class Parser
+    internal class MarkdownParser
     {
         internal static Pattern[] Patterns = new Pattern[]
         {
@@ -18,7 +18,7 @@ namespace cosmos_markdown
         internal Font Font;
         internal List<Rule> Rules;
 
-        internal Parser(string[] Document, Font Font)
+        internal MarkdownParser(string[] Document, Font Font)
         {
             this.Document = Document;
             this.Font = Font;

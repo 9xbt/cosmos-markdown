@@ -10,45 +10,43 @@ namespace cosmos_markdown.Tools
     {
         internal static int DrawString(Canvas cv, int px, int x, int y, int cvWidth, string text, TTFFont font, Color color, bool underline = false)
         {
-            //text = text.Replace('’', '\'');
-
             int offX = 0, offY = 0;
             GlyphResult g;
 
             Rune prevRune = new Rune('\0');
 
-            foreach (Rune c in text.EnumerateRunes())
+            foreach (string word in text.Split(' '))
             {
-                var gMaybe = font.RenderGlyphAsBitmap(c, color, px);
-                if (!gMaybe.HasValue) continue;
-
-                g = gMaybe.Value;
-
-                font.GetGlyphHMetrics(c, px, out int advWidth, out int lsb);
-                font.GetKerning(prevRune, c, px, out int kerning);
-
-                offX += lsb + kerning;
-
-                int tX = x + offX, tY = y + offY + g.offY;
-
-                if (tX > cvWidth - 25 - g.bmp.Height)
+                if (x + offX + font.CalculateWidth(word, px) > cvWidth - 25)
                 {
-                    offY += px;
                     offX = 0;
-
-                    tX = x + offX;
-                    tY = y + offY + g.offY;
+                    offY += px;
                 }
 
-                var surface = new Surface(cv);
-                surface.DrawBitmap(g.bmp, tX, tY);
+                foreach (Rune c in (word + ' ').EnumerateRunes())
+                {
+                    var gMaybe = font.RenderGlyphAsBitmap(c, color, px);
+                    if (!gMaybe.HasValue) continue;
 
-                if (kerning > 0)
-                    offX -= lsb;
-                else
-                    offX += advWidth - lsb;
+                    g = gMaybe.Value;
 
-                prevRune = c;
+                    font.GetGlyphHMetrics(c, px, out int advWidth, out int lsb);
+                    font.GetKerning(prevRune, c, px, out int kerning);
+
+                    offX += lsb + kerning;
+
+                    int tX = x + offX, tY = y + offY + g.offY;
+
+                    var surface = new Surface(cv);
+                    surface.DrawBitmap(g.bmp, tX, tY);
+
+                    if (kerning > 0)
+                        offX -= lsb;
+                    else
+                        offX += advWidth - lsb;
+
+                    prevRune = c;
+                }
             }
 
             if (underline)
