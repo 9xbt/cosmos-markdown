@@ -1,20 +1,28 @@
 ﻿#define __RULE_DEBUG__
 
+using System;
 using PrismAPI.Graphics;
 
 namespace cosmos_markdown
 {
-    public static class Renderer
+    public class Renderer
     {
+        internal Canvas? Canvas;
+        internal Action? Update;
+
         /// <summary>
         /// Renders a Markdown document to a <see cref="Canvas"/>
         /// </summary>
         /// <param name="Canvas">The canvas to render the document to</param>
         /// <param name="Document">The Markdown document to render</param>
         /// <param name="Font">The font to use by renderer</param>
-        public static void RenderMarkdownDocument(Canvas Canvas, string[] Document, Font Font)
+        /// <param name="Update">Called when an item finishes rendering</param>
+        public void RenderMarkdownDocument(Canvas Canvas, string[] Document, Font Font, Action Update)
         {
-            var parser = new Parser(Document, Font);
+            this.Canvas = Canvas;
+            this.Update = Update;
+
+            var parser = new Parser(this, Document, Font);
             parser.ParseDocument();
 
 #if __RULE_DEBUG__
@@ -33,12 +41,17 @@ namespace cosmos_markdown
             int x = 25, y = 25;
 #endif
 
-            foreach (var rule in parser.Rules)
+            for (int i = 0; i < parser.Rules.Count; i++)
             {
+                var rule = parser.Rules[i];
                 var size = rule.RenderTo(Canvas, x, y);
 
-                x = size.X == 0 ? 25 : x + size.X; //
+                x = size.X == 0 ? 25 : x + size.X;
                 y += size.Y;
+
+                Canvas.DrawFilledRectangle(0, 0, Canvas.Width, 16, 0, Color.White);
+                Canvas.DrawString(0, Canvas.Height - 16, "Rendering items... " + (i / parser.Rules.Count * 100) + "%", default, Color.Black);
+                Update?.Invoke();
             }
         }
     }

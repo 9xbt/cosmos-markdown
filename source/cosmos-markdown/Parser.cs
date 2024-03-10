@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using PrismAPI.Graphics;
 using System.Collections.Generic;
 using cosmos_markdown.regex.RegularExpressions;
+using Microsoft.VisualBasic;
 
 namespace cosmos_markdown
 {
@@ -17,12 +19,15 @@ namespace cosmos_markdown
             new Patterns.Text()
         };
 
+        internal Renderer Renderer;
         internal Font Font;
-        internal List<Rule> Rules;
         internal List<string> Document;
 
-        internal Parser(string[] Document, Font Font)
+        internal List<Rule> Rules;
+
+        internal Parser(Renderer Renderer, string[] Document, Font Font)
         {
+            this.Renderer = Renderer;
             this.Document = Document.ToList();
             this.Font = Font;
 
@@ -35,6 +40,10 @@ namespace cosmos_markdown
             for (int i = 0; i < Document.Count; i++)
             {
                 ParseLine(i);
+
+                Renderer.Canvas!.DrawFilledRectangle(0, 0, Renderer.Canvas.Width, 16, 0, Color.White);
+                Renderer.Canvas!.DrawString(0, Renderer.Canvas.Height - 16, "Parsing document... " + (i / Document.Count * 100) + "%", default, Color.Black);
+                Renderer.Update?.Invoke();
             }
         }
 
@@ -55,7 +64,7 @@ namespace cosmos_markdown
                 if (!match.Success) continue;
 
                 var groups = match.Groups;
-                temp = temp.Substring(0, match.Index) + temp.Substring(match.Index + match.Length);
+                temp = temp.Substring(0, match.Index); // TODO: fix this
                 indexes.Add(match.Index);
 
                 switch (pattern.TheType)
@@ -93,13 +102,15 @@ namespace cosmos_markdown
                         continue;
 
                     case "Text":
-                        if (groups[1].Value.Trim().Length == 0) continue;
+                        if (groups[1].Value.Trim().Length == 0) break;
 
                         LastRule = new Rules.Text(groups[1].Value.Trim(), Font.Regular);
                         rules.Add(LastRule);
 
-                        continue;
+                        break;
                 }
+
+                temp += temp.Substring(match.Index + match.Length);
             }
 
         EndOfParse:

@@ -16,8 +16,9 @@ namespace cosmos_markdown.test
             {
                 Screen.Clear(Color.White);
                 Screen.Update();
-                
-                Renderer.RenderMarkdownDocument(Screen, Resources.Markdown, new Font(Resources.Regular, Resources.Bold, Resources.Italic, Resources.BoldItalic));
+
+                var renderer = new Renderer();
+                renderer.RenderMarkdownDocument(Screen, Resources.Markdown, new Font(Resources.Regular, Resources.Bold, Resources.Italic, Resources.BoldItalic), Update);
 
                 Screen.Update();
             }
@@ -29,5 +30,7 @@ namespace cosmos_markdown.test
         }
 
         protected override void Run() => Heap.Collect();
+
+        private void Update() => Screen.Update();
     }
 }
