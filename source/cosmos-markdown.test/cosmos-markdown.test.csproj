@@ -23,15 +23,27 @@
         <VMWareEdition>Workstation</VMWareEdition>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    </PropertyGroup>
+
     <ItemGroup>
       <None Remove="Resources\Example.md" />
       <None Remove="Resources\MonaSans-Bold.ttf" />
+      <None Remove="Resources\MonaSans-BoldItalic.ttf" />
+      <None Remove="Resources\MonaSans-Italic.ttf" />
       <None Remove="Resources\MonaSans-Regular.ttf" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\Example.md" />
       <EmbeddedResource Include="Resources\MonaSans-Bold.ttf" />
+      <EmbeddedResource Include="Resources\MonaSans-BoldItalic.ttf" />
+      <EmbeddedResource Include="Resources\MonaSans-Italic.ttf" />
       <EmbeddedResource Include="Resources\MonaSans-Regular.ttf" />
     </ItemGroup>
 

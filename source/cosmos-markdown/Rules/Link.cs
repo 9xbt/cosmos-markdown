@@ -5,24 +5,20 @@ using Color = System.Drawing.Color;
 
 namespace cosmos_markdown.Rules
 {
-    internal class H2 : Rule
+    internal class Link : Rule
     {
-        private const int FontSize = 34;
+        private const int FontSize = 18;
 
         private string Text;
         private TTFFont Font;
 
-        internal H2(string Text, TTFFont Font)
+        internal Link(string Text, TTFFont Font)
         {
             this.Text = Text;
             this.Font = Font;
         }
 
         internal override (int X, int Y) RenderTo(Canvas Canvas, int X, int Y)
-        {
-            var size = TextRenderer.DrawString(Canvas, FontSize, 25, Y + FontSize, Canvas.Width, Text + '\n', Font, Color.Black, true, false);
-
-            return (size.X, size.Y + FontSize);
-        }
+            => TextRenderer.DrawString(Canvas, FontSize, X, Y + FontSize, Canvas.Width, Text + ' ', Font, Color.FromArgb(0x7F0969DA), true, true, false, 0xFF0969DA);
     }
 }

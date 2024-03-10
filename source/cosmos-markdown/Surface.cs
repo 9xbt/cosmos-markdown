@@ -14,13 +14,6 @@ namespace cosmos_markdown
 
         public void DrawBitmap(Cosmos.System.Graphics.Bitmap Image, int X, int Y)
         {
-            /*int maxWidth = Canvas.Width - 30;
-
-            if (X > maxWidth)
-            {
-                X -= (Canvas.Width - 50) * (maxWidth / X);
-            }*/
-
             // Fast alpha image drawing.
             for (int IY = 0; IY < Image.Height; IY++)
             {

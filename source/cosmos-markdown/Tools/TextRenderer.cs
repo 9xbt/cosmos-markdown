@@ -1,29 +1,32 @@
 ﻿using CosmosTTF;
-using System.Drawing;
 using System.Text;
-using Color = System.Drawing.Color;
 using PrismAPI.Graphics;
+using Color = System.Drawing.Color;
 
 namespace cosmos_markdown.Tools
 {
     internal static class TextRenderer
     {
-        internal static int DrawString(Canvas cv, int px, int x, int y, int cvWidth, string text, TTFFont font, Color color, bool underline = false)
+        internal static (int X, int Y) DrawString(Canvas cv, int px, int x, int y, int cvWidth, string text, TTFFont font, Color color, bool underline = false, bool closeUnderline = true, bool underlineFill = true, uint underlineColor = 0xFFD8DEE4)
         {
             int offX = 0, offY = 0;
+            var words = text.Split(' ');
+
             GlyphResult g;
-
             Rune prevRune = new Rune('\0');
-
-            foreach (string word in text.Split(' '))
+            
+            for (int i = 0; i < words.Length; i++)
             {
+                var word = words[i];
+                if (i != words.Length - 1) word += ' ';
+
                 if (x + offX + font.CalculateWidth(word, px) > cvWidth - 25)
                 {
                     offX = 0;
                     offY += px;
                 }
 
-                foreach (Rune c in (word + ' ').EnumerateRunes())
+                foreach (Rune c in word.EnumerateRunes())
                 {
                     var gMaybe = font.RenderGlyphAsBitmap(c, color, px);
                     if (!gMaybe.HasValue) continue;
@@ -51,10 +54,11 @@ namespace cosmos_markdown.Tools
 
             if (underline)
             {
-                cv.DrawLine(25, y + offY + 10 - 1, cv.Width - 26, y + offY + 10 - 1, new(0xFFD8DEE4));
+                cv.DrawLine(x, y + offY + (closeUnderline ? 2 : 10) - 1, underlineFill ? cv.Width - 26 :
+                    x + offX, y + offY + (closeUnderline ? 2 : 10) - 1, new(underlineColor));
             }
 
-            return offY + px;
+            return (text.EndsWith('\n') ? 0 : offX, offY + (underline ? (closeUnderline ? 10 : 20) : 0));
         }
     }
 }

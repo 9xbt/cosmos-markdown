@@ -2,7 +2,7 @@
 {
     internal class Paragraph : Pattern
     {
-        internal override string ThePattern => "^(.*?)$";
+        internal override string ThePattern => "^\\s*$";
 
         internal override string TheType => "Paragraph";
     }

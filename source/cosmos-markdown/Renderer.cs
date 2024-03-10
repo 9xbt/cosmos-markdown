@@ -1,7 +1,6 @@
 ﻿#define __RULE_DEBUG__
 
 using PrismAPI.Graphics;
-using System.Collections.Generic;
 
 namespace cosmos_markdown
 {
@@ -19,7 +18,7 @@ namespace cosmos_markdown
             parser.ParseDocument();
 
 #if __RULE_DEBUG__
-            int y = 25;
+            int x = 25, y = 25;
 
             Canvas.DrawString(0, 0, "Rule count: " + parser.Rules.Count, default, Color.Black);
 
@@ -28,26 +27,18 @@ namespace cosmos_markdown
                 var rule = parser.Rules[i];
 
                 Canvas.DrawString(0, (i + 1) * 16, rule.GetType().ToString(), default, Color.Black);
-
                 y += 16;
             }
-
-            y += 25;
-
-            /*for (int i = 0; i < Document.Length; i++)
-            {
-                var line = Document[i];
-
-                Canvas.DrawString(0, (i + 1) * 16, line, default, Color.Black);
-            }*/
 #else
-            int y = 25;
+            int x = 25, y = 25;
 #endif
 
             foreach (var rule in parser.Rules)
             {
-                rule.RenderTo(Canvas, y);
-                y += rule.Size;
+                var size = rule.RenderTo(Canvas, x, y);
+
+                x = size.X == 0 ? 25 : x + size.X; //
+                y += size.Y;
             }
         }
     }

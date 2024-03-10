@@ -1,24 +1,9 @@
-﻿using cosmos_markdown.Tools;
-using CosmosTTF;
-using PrismAPI.Graphics;
-using Color = System.Drawing.Color;
+﻿using PrismAPI.Graphics;
 
 namespace cosmos_markdown.Rules
 {
     internal class Paragraph : Rule
     {
-        private const int FontSize = 18;
-
-        private string Text;
-        private TTFFont Font;
-
-        internal Paragraph(string Text, TTFFont Font) : base(Text.Trim().Length == 0 ? 10 : FontSize + 10)
-        {
-            this.Text = Text.Trim();
-            this.Font = Font;
-        }
-
-        internal override int RenderTo(Canvas Canvas, int Y)
-            => TextRenderer.DrawString(Canvas, FontSize, 25, Y + FontSize, Canvas.Width, Text, Font, Color.Black, false);
+        internal override (int X, int Y) RenderTo(Canvas Canvas, int X, int Y) => (0, 36);
     }
 }

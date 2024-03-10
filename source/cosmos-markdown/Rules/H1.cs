@@ -12,13 +12,17 @@ namespace cosmos_markdown.Rules
         private string Text;
         private TTFFont Font;
 
-        internal H1(string Text, TTFFont Font) : base(FontSize + 10)
+        internal H1(string Text, TTFFont Font)
         {
             this.Text = Text;
             this.Font = Font;
         }
 
-        internal override int RenderTo(Canvas Canvas, int Y)
-            => TextRenderer.DrawString(Canvas, FontSize, 25, Y + FontSize, Canvas.Width, Text, Font, Color.Black, true);
+        internal override (int X, int Y) RenderTo(Canvas Canvas, int X, int Y)
+        {
+            var size = TextRenderer.DrawString(Canvas, FontSize, 25, Y + FontSize, Canvas.Width, Text + '\n', Font, Color.Black, true, false);
+
+            return (size.X, size.Y + FontSize);
+        }
     }
 }

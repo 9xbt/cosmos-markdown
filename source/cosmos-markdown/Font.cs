@@ -7,12 +7,14 @@ namespace cosmos_markdown
         public TTFFont Regular;
         public TTFFont Bold;
         public TTFFont Italic;
+        public TTFFont BoldItalic;
 
-        public Font(TTFFont Regular, TTFFont? Bold = default, TTFFont? Italic = default)
+        public Font(TTFFont Regular, TTFFont Bold, TTFFont Italic, TTFFont BoldItalic)
         {
             this.Regular = Regular;
-            this.Bold = Bold == default ? Regular : Bold;
-            this.Italic = Italic == default ? Regular : Italic;
+            this.Bold = Bold;
+            this.Italic = Italic;
+            this.BoldItalic = BoldItalic;
         }
     }
 }
