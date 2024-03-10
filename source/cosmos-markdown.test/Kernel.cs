@@ -8,7 +8,7 @@ namespace cosmos_markdown.test
 {
     public class Kernel : Cosmos.System.Kernel
     {
-        static Display Screen = Display.GetDisplay(1280, 1024);
+        static Display Screen = Display.GetDisplay(1600, 1200);
 
         protected override void BeforeRun()
         {
@@ -16,15 +16,7 @@ namespace cosmos_markdown.test
             {
                 Screen.Clear(Color.White);
                 
-                MarkdownRenderer.RenderMarkdownDocument(Screen, Resources.Markdown, new Font(Resources.Regular, Resources.Bold));
-
-                Screen.Update();
-
-                Console.ReadKey(true);
-
-                Screen.Clear(Color.White);
-
-                MarkdownRenderer.RenderMarkdownDocument(Screen, new string[] { "# Admire ’", "Admire the ’" }, new Font(Resources.Regular, Resources.Bold));
+                Renderer.RenderMarkdownDocument(Screen, Resources.Markdown, new Font(Resources.Regular, Resources.Bold));
 
                 Screen.Update();
             }

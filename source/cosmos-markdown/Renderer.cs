@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace cosmos_markdown
 {
-    public static class MarkdownRenderer
+    public static class Renderer
     {
         /// <summary>
         /// Renders a Markdown document to a <see cref="Canvas"/>
@@ -15,7 +15,7 @@ namespace cosmos_markdown
         /// <param name="Font">The font to use by renderer</param>
         public static void RenderMarkdownDocument(Canvas Canvas, string[] Document, Font Font)
         {
-            var parser = new MarkdownParser(Document, Font);
+            var parser = new Parser(Document, Font);
             parser.ParseDocument();
 
 #if __RULE_DEBUG__
